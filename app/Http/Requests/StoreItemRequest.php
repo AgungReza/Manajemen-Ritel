@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreItemRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'category_id' => [
+                'required',
+                'integer',
+                'exists:categories,id',
+            ],
+
+            'name' => [
+                'required',
+                'string',
+                'max:150',
+            ],
+
+            'price' => [
+                'required',
+                'numeric',
+                'min:0',
+            ],
+
+            'stock' => [
+                'required',
+                'integer',
+                'min:0',
+            ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'category_id.required' => 'Kategori barang wajib dipilih.',
+            'category_id.integer' => 'Kategori barang tidak valid.',
+            'category_id.exists' => 'Kategori yang dipilih tidak tersedia.',
+
+            'name.required' => 'Nama barang wajib diisi.',
+            'name.string' => 'Nama barang harus berupa teks.',
+            'name.max' => 'Nama barang maksimal 150 karakter.',
+
+            'price.required' => 'Harga barang wajib diisi.',
+            'price.numeric' => 'Harga barang harus berupa angka.',
+            'price.min' => 'Harga barang tidak boleh kurang dari 0.',
+
+            'stock.required' => 'Stok barang wajib diisi.',
+            'stock.integer' => 'Stok barang harus berupa bilangan bulat.',
+            'stock.min' => 'Stok barang tidak boleh kurang dari 0.',
+        ];
+    }
+}
